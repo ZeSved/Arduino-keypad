@@ -3,9 +3,46 @@
 int rows[2] = {2, 3};
 int columns[3] = {5, 6, 7};
 
-String actions[2][3] = {
-  {"Coding for life", "B", "C"},
-  {"D", "E", "F"}
+//struct Commands {
+//  boolean hasHex;
+//  int hex;
+//  String w;
+//};
+
+//Commands actions[2][3][8][3] = {
+//  {
+//    {
+//      {false, 0, "https"}, 
+//  {false, 0, ":"}, 
+//  {true, 47, "null"}, 
+//  {false, 0, "tenor.com"}, 
+//  {false, 0, "/"}, 
+//  {false, 0, "view"}, 
+//  {false, 0, "/"}, 
+//  {false, 0, "will-wood-ik-i-know-gif-13165299665569457587"}
+//  }, 
+//  {false, 0, "B"}, 
+//  {false, 0, "C"}
+//  },
+//  {{false, 0, "D"}, {false, 0, "E"}, {false, 0, "F"}}
+//};
+String actions[2][3][21] = {
+  {
+    {
+     "https", 
+  ":", 
+  "/", 
+  "/", 
+  "tenor.com", 
+  "/", 
+  "view", 
+  "/", 
+  "will", "+", "wood", "+", "ik", "+", "i", "+", "know", "+", "gif", "+", "13165299665569457587", 
+  }, 
+  {"B"}, 
+  {"C"}
+  },
+  {{"D"}, {"E"}, {"F"}}
 };
 
 int currentRow = 3;
@@ -36,7 +73,33 @@ void loop() {
 
   for (int c : columns) {
     if (digitalRead(c) == HIGH && (currentRow != lastPressed[0] || c != lastPressed[1])) {
-      Keyboard.print(actions[currentRow - 2][c - 5]);
+      for (int i = 0; i <= 20; i++) {
+        //Commands act[3] = actions[currentRow - 2][c - 5][i];
+        String act = actions[currentRow - 2][c - 5][i];
+
+        if (act == "/") {
+          Keyboard.press(KEY_LEFT_SHIFT);
+          Keyboard.press('7');
+          Keyboard.releaseAll();
+        } else if (act == ":") {
+          Keyboard.press(KEY_LEFT_SHIFT);
+          Keyboard.press('.');
+          Keyboard.releaseAll();
+        } else if (act == "+") {
+          //Keyboard.press(KEY_LEFT_SHIFT);
+          Keyboard.press(KEY_KP_MINUS);
+          Keyboard.releaseAll();
+        } else {
+          Keyboard.print(act);
+        }
+        //if (act[0].hasHex == 1) {
+        //  Keyboard.write(act[0].hex);
+        //} else {
+        //  Keyboard.print(act[0].w);
+        //}
+      }
+      //
+      //Keyboard.print("\n");
       delay(100);
       Keyboard.releaseAll();
       lastPressed[0] = currentRow;
